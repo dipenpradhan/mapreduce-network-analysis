@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Created by dipenpradhan on 5/1/16.
  */
-class AnalysisReducer extends MapReduceBase implements Reducer<Text, Text, Text, Text> {
+class AnalysisJoinReducer extends MapReduceBase implements Reducer<Text, Text, Text, Text> {
     public void reduce(Text key, Iterator<Text> values, OutputCollector<Text, Text> output, Reporter reporter) throws IOException {
         int totalLen = 0;
         Set<String> domainSet = new HashSet<>();

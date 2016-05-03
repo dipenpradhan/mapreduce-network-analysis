@@ -14,11 +14,17 @@ import org.apache.hadoop.util.ToolRunner;
  * Created by dipenpradhan on 4/30/16.
  */
 public class PcapRunner extends Configured implements Tool {
+
+    public static int NUM_MAP_TASKS=16;
+    public static int NUM_REDUCE_TASKS=16;
+
     public int run(String[] args) throws Exception {
 
         Job httpJob = HttpJobBuilder.build(getConf(), args);
         Job dnsJob = DnsJobBuilder.build(getConf(), args);
         Job analysisJob = AnalysisJobBuilder.build(getConf(), "pcap_output/http/","pcap_output/dns/");
+//        Job tcpJob = TCPJobBuilder.build(getConf(), args);
+//        Job synFloodAnalysisJob = SynFloodAnalysisJobBuilder.build(getConf(), "pcap_output/tcp/");
 
         JobControl jobControl=new JobControl("jobControl");
         jobControl.addJob(httpJob);
@@ -26,6 +32,9 @@ public class PcapRunner extends Configured implements Tool {
         jobControl.addJob(analysisJob);
         analysisJob.addDependingJob(httpJob);
         analysisJob.addDependingJob(dnsJob);
+//        jobControl.addJob(tcpJob);
+//        jobControl.addJob(synFloodAnalysisJob);
+//        synFloodAnalysisJob.addDependingJob(tcpJob);
         jobControl.run();
 
         return 1;

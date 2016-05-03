@@ -1,4 +1,4 @@
-package com.cis612cloud.mrnet.tcpsyn;
+package com.cis612cloud.mrnet.synflood;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -13,11 +13,12 @@ import java.util.Iterator;
 /**
  * Created by dipenpradhan on 5/1/16.
  */
-class HttpReducer extends MapReduceBase implements Reducer<Text, LongWritable, Text, LongWritable> {
+class SynFloodAnalysisReducer extends MapReduceBase implements Reducer<Text, LongWritable, Text, LongWritable> {
     public void reduce(Text key, Iterator<LongWritable> values, OutputCollector<Text, LongWritable> output, Reporter reporter) throws IOException {
         long sum = 0;
-        while (values.hasNext())
-            sum += values.next().get();
+
+        while(values.hasNext())
+            sum+=values.next().get();
 
         output.collect(key, new LongWritable(sum));
     }

@@ -22,8 +22,9 @@ public class HttpJobBuilder {
 
     public static Job build(Configuration conf, String... inputPaths) throws IOException {
         JobConf jobConf = new JobConf(conf, PcapRunner.class);
-        jobConf.setJobName("Pcap");
-
+        jobConf.setJobName("HTTP");
+        jobConf.setNumMapTasks(PcapRunner.NUM_MAP_TASKS);
+        jobConf.setNumReduceTasks(PcapRunner.NUM_REDUCE_TASKS);
         jobConf.setOutputKeyClass(Text.class);
         jobConf.setOutputValueClass(LongWritable.class);
         jobConf.setInputFormat(PcapInputFormat.class);

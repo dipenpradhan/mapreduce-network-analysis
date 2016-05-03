@@ -19,14 +19,15 @@ public class AnalysisJobBuilder {
 
     public static Job build(Configuration conf, String httpOutputPath, String dnsOutputPath) throws IOException {
         JobConf jobConf = new JobConf(conf, PcapRunner.class);
-        jobConf.setJobName("Pcap");
-
+        jobConf.setJobName("Analysis");
+        jobConf.setNumMapTasks(PcapRunner.NUM_MAP_TASKS);
+        jobConf.setNumReduceTasks(PcapRunner.NUM_REDUCE_TASKS);
         jobConf.setOutputKeyClass(Text.class);
         jobConf.setOutputValueClass(Text.class);
 
         MultipleInputs.addInputPath(jobConf, new Path(httpOutputPath), KeyValueTextInputFormat.class, AnalysisHttpMapper.class);
         MultipleInputs.addInputPath(jobConf, new Path(dnsOutputPath), KeyValueTextInputFormat.class, AnalysisDnsMapper.class);
-        jobConf.setReducerClass(AnalysisReducer.class);
+        jobConf.setReducerClass(AnalysisJoinReducer.class);
 
         // Combine input files into splits of 100MB in size
         jobConf.setLong("mapred.max.split.size", 104857600);
